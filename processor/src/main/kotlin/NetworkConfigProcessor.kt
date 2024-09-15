@@ -56,8 +56,8 @@ class NetworkConfigProcessor(
                 className
             )
 
-            file.appendText("package $packageName\n\n")
-            file.appendText("import com.strukov.processor.Environment\n\n")
+//            file.appendText("package $packageName\n\n")
+//            file.appendText("import org.strukov.processor.Environment\n\n")
             file.appendText("public class $className(private val environmentSettings: EnvironmentSettings) {\n")
             file.appendText("\tinternal val url get() = environments[environmentSettings.stage].orEmpty()\n")
             file.appendText("\tprivate val environments = mapOf<String, String>(")
@@ -95,22 +95,21 @@ class NetworkConfigProcessor(
             file.appendText("\n\t\t${environment}.env to \"${name!!.value as String}\"")
 
         }
+    }
+}
 
-        private fun OutputStream.appendText(str: String) {
-            this.write(str.toByteArray())
-        }
+/**
+ * Теперь необходимо сообщить KSP о нашем процессоре.
+ * Для этого нужно создать новый класс Provider, который реализует SymbolProcessorProvider.
+ * зарегистрируем его!!!
+ */
+class NetworkConfigProcessorProvider : SymbolProcessorProvider {
+    override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
+        return NetworkConfigProcessor(environment.codeGenerator, environment.logger)
     }
 
+}
 
-    /**
-     * Теперь необходимо сообщить KSP о нашем процессоре.
-     * Для этого нужно создать новый класс Provider, который реализует SymbolProcessorProvider.
-     * зарегистрируем его!!!
-     */
-    internal class NetworkConfigProcessorProvider : SymbolProcessorProvider {
-        override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-            return NetworkConfigProcessor(environment.codeGenerator, environment.logger)
-        }
-
-    }
+private fun OutputStream.appendText(str: String) {
+    this.write(str.toByteArray())
 }

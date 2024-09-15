@@ -1,3 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+val kspVersion: String by project
+
 plugins {
     kotlin("jvm")
 }
@@ -10,7 +15,6 @@ repositories {
 }
 
 dependencies {
-    val kspVersion: String by project
     implementation("com.google.devtools.ksp:symbol-processing-api:$kspVersion")
     testImplementation(kotlin("test"))
 }
@@ -21,3 +25,8 @@ tasks.test {
 kotlin {
     jvmToolchain(11)
 }
+
+//tasks.withType<KotlinCompile>().all {
+//    compilerOptions.jvmTarget.set(JvmTarget.JVM_11) //= JavaVersion.VERSION_11.toString()
+//
+//}

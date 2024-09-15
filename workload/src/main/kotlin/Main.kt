@@ -1,8 +1,8 @@
 internal fun main() {
-//    println(SampleConfigUrl(EnvironmentSettings()).url)
-
+    println(SampleConfigUrl(EnvironmentSettings()).url)
 }
 
+//конфигурационный файл с помощью аннотаций
 @EnvironmentConfig
 internal interface SampleConfig {
     @Url(environment = Environment.PROD, name = "https://www.prod.com")
@@ -12,7 +12,10 @@ internal interface SampleConfig {
     val test: String
 }
 
-internal class EnvironmentSettings {
+/**
+ * Создадим класс-заглушку, который возвращает текущую среду.
+ */
+class EnvironmentSettings {
     val stage get() = Environment.PROD.env
 
     enum class Environment(val env: String) {

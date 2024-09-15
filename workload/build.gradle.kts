@@ -21,4 +21,8 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(11)
+//чтобы IDE знала о сгенерированных файлах
+    sourceSets.main {
+        kotlin.srcDir("build/generated/ksp/main/kotlin")
+    }
 }
